@@ -6,8 +6,9 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const morgan = require('morgan');
-const {User} = require('../models/user.js');
-const {Prescription} = require('../models/prescription.js');
+const {User} = require('../models/user');
+const {Prescription} = require('../models/prescription');
+const {Appointment} = require('../models/appointment');
 
 mongoose.Promise = bluebird;
 const app = express();
@@ -56,19 +57,6 @@ app.get('/doctor/:id', (req, res) => {
       return res.status(500);
     if (user && user.type === 'doctor') {
       return res.json(user);
-    } else {
-      return res.status(404).send({ msg: 'Doctor not found' });
-    }
-  });
-});
-
-app.delete('/doctor/:id', (req, res) => {
-  User.findOne({'_id': req.params.id}, (err, user) => {
-    if (err)
-      return res.status(500);
-    if (user && user.type === 'doctor') {
-      user.remove();
-      return res.json({msg: 'Doctor removed successfully'});
     } else {
       return res.status(404).send({ msg: 'Doctor not found' });
     }
@@ -130,6 +118,37 @@ app.post('/patient/:id/prescription', (req, res) => {
       res.status(404).send({ msg: 'Patient not found' });
     }
   });
+});
+
+app.post('/user/:id/appointment/:appointment', (req, res) => {
+  User.findOne({'_id': req.params.id}, (err, user) => {
+    if (err)
+      return done(err);
+    if (user) {
+      user.appointments.push(req.params.appointment);
+      user.save(function(err) {
+        if (err)
+          return res.status(500);
+
+        res.json({msg: 'Appointment set'});
+      });
+    } else {
+      res.status(404).send({ msg: 'User not found' });
+    }
+  });
+});
+
+app.get('/user/:id/appointments', (req, res) => {
+  User.findOne({'_id': req.params.id}).populate('appointments').exec(
+    function(err, user){
+      if (err) return res.status(500);
+      if (user) {
+        res.json(user.appointments);
+      } else {
+        res.json({msg: 'User not found'});
+      }
+    }
+  );
 });
 
 app.set('port', process.env.USER_PORT || config.ports.user);

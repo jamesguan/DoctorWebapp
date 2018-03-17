@@ -3,5 +3,8 @@ ports:
   gateway: 20000
   user: 20001
 
+env:
+  url: 'http://localhost'
+
 database:
   uri: 'mongodb://localhost/doctordb'

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const {PrescriptionSchema} = require('./prescription');
-const {AppointmentSchema} = require('./appointment');
+const {AppointmentSchema, Appointment} = require('./appointment');
 
 let user = Schema({
     firstName: String,
@@ -9,7 +9,10 @@ let user = Schema({
     type: { type: String, enum: ['patient', 'doctor', 'admin'], default: "patient"},
     prescriptions: [PrescriptionSchema],
     patients: [String],
-    appointments: {type: mongoose.Schema.Types.ObjectId, ref: 'AppointmentSchema'},
+    appointments: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Appointment'
+    }],
     permissions: { type: Array},
     createTime: { type: Date, default: Date.now},
     active: {type: Boolean, default: true}
