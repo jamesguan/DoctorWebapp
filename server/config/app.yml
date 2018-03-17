@@ -1,0 +1,7 @@
+ports:
+  appointment: 20002
+  gateway: 20000
+  user: 20001
+
+database:
+  uri: 'mongodb://localhost/doctordb'
