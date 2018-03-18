@@ -11,14 +11,11 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <label for="username"> ID: </label>
+    <label for="username"> ID: ( Use 5aad2d8fb4308a0a146f5f9c ) </label>
     <br />
     <input name="username" ngModel required #first="ngModel" />
     <br />
-    <label for="password"> Password: </label>
-    <br />
-    <input name="password" type="password" ngModel />
-    <br />
+    <input name="password" type="password" ngModel hidden/>
     <button mat-raised-button>Submit</button>
   </form>
 </mat-expansion-panel>

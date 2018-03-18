@@ -42,8 +42,7 @@ def get_endpoint(service, uri=''):
 @app.route('/auth', methods=['POST'])
 def authenticate():
     endpoint = get_endpoint('user', 'user/%s' % (request.json['username']))
-    user_dict = requests.get(endpoint).json()
-    #if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
+    user_dict = requests.get(endpoint, headers=headers).json()
     if user_dict:
         user_dict['id'] = user_dict['_id']
         access_token = create_access_token(identity=user_dict)

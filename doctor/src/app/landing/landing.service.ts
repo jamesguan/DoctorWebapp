@@ -6,7 +6,6 @@ import { isPlatformBrowser} from '@angular/common';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json',
-    'Authorization': 'JWT'
   })
 };
 

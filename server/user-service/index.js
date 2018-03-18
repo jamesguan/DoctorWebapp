@@ -27,7 +27,6 @@ app.use( (req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin',null);
   res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE');
   res.setHeader('Access-Control-Allow-Headers','X-Requested-With, content-type');
-  console.log(req.body);
   next();
 });
 
@@ -93,7 +92,6 @@ app.get('/admin/:id/doctors', (req, res) => {
 
 app.post('/user', (req, res) => {
   let newUser = new User(req.body);
-  console.log(req.body);
   switch (req.body.type){
     case 'admin':
       newUser.permissions = ['adminView'];

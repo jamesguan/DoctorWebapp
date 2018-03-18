@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 export class LandingComponent {
   title = 'Willhelm International';
   constructor(private landingService: LandingService){}
+  
   onSubmit(f: NgForm): void {
     console.log(f.value);  // { first: '', last: '' }
     console.log(f.valid);  // false
