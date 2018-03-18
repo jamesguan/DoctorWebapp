@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Doctor } from './doctor';
 import { AdminService } from './admin.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'admin',
@@ -8,6 +9,9 @@ import { AdminService } from './admin.service';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
+  doctors: Doctor[] = [];
+  user: {} = {};
+  patients: any[] = [];
   constructor(private adminService: AdminService){
 
   }
@@ -15,7 +19,7 @@ export class AdminComponent implements OnInit {
     this.getDoctors();
     this.getPatients();
     this.getUser();
-    this.breakpoint = (window.innerWidth <= 800) ? 1 : 2;
+    //this.breakpoint = (window.innerWidth <= 800) ? 1 : 2;
   }
   getDoctors(): void {
     this.adminService.getDoctors()
@@ -33,7 +37,7 @@ export class AdminComponent implements OnInit {
     this.adminService.deleteUser(id);
   }
   onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
+    //this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
   }
   addDoctor(f: NgForm): void {
     if (!f.valid){

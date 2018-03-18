@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { Admin } from './admin';
 import { Doctor } from './doctor';
-import { DOCTORS } from './mock-doctors';
 import { Router } from '@angular/router';
 import { retry } from 'rxjs/operators';
 
@@ -18,7 +17,7 @@ export class AdminService {
     this.getData();
   }
   getData(){
-    this.http.get('http://localhost:20000/view/admin', {
+    this.http.get<any>('http://localhost:20000/view/admin', {
       headers: new HttpHeaders({
         'Content-Type':  'application/json',
         'Authorization': `Bearer ${localStorage.getItem("access_token")}`
@@ -26,7 +25,7 @@ export class AdminService {
     })
     .pipe(retry(10))
     .subscribe(
-      (data: any[]) => {
+      (data) => {
         this.doctors.splice(0, this.doctors.length);
         data.doctors.forEach((elem) => {
           let doc = new Doctor(elem._id, elem.firstName, elem.lastName)
@@ -52,7 +51,6 @@ export class AdminService {
             this.router.navigate(['/']);
         }
       });
-    );
   }
   getUser(): Observable<{}>{
     return of(this.user);
@@ -89,7 +87,7 @@ export class AdminService {
             //localStorage.clear();
             //this.router.navigate(['/']);
         }
-      })
+      });
   }
   deleteUser(id): void{
     this.http.put(`http://localhost:20000/user/${id}/inactive`, {status: false} ,{
@@ -111,7 +109,6 @@ export class AdminService {
             //localStorage.clear();
             //this.router.navigate(['/']);
         }
-      })
-    );
+      });
   }
 }

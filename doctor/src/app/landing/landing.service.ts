@@ -17,7 +17,6 @@ export class LandingService {
 
   }
   signIn(data): void{
-    console.log(data);
     this.http.post('http://localhost:20000/auth', data, httpOptions)
     .subscribe(
       (data: any[]) => {

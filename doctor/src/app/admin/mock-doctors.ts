@@ -1,4 +1,4 @@
-import { Doctor } from './doctor';
+/* import { Doctor } from './doctor';
 
 export const DOCTORS: Doctor[] = [
   { id: 11, firstName: 'Mr. Nice', lastName: 'Guy' },
@@ -12,3 +12,4 @@ export const DOCTORS: Doctor[] = [
   { id: 19, firstName: 'Magma', lastName: 'Guy' },
   { id: 20, firstName: 'Tornado', lastName: 'Guy' }
 ];
+*/

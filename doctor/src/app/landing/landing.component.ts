@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { LandingService } from './landing.service';
-
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'landing',
   templateUrl: './landing.component.html',
