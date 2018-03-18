@@ -1,0 +1,24 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to the {{ title }} portal!
+  </h1>
+  <img width="300" alt="Angular Logo" src="../assets/imgs/logo.png">
+</div>
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title layout-align="center center" style="text-align: center">
+      Sign in
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <label for="username"> ID: </label>
+    <br />
+    <input name="username" ngModel required #first="ngModel" />
+    <br />
+    <label for="password"> Password: </label>
+    <br />
+    <input name="password" type="password" ngModel />
+    <br />
+    <button mat-raised-button>Submit</button>
+  </form>
+</mat-expansion-panel>

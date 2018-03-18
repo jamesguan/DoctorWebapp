@@ -1,0 +1,36 @@
+.fill-space {
+  flex: 1 1 auto;
+}
+.center-theme {
+  text-align: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #ffffff;
+}
+.flexit {
+  display: flex;
+}
+.right-align {
+  text-align: right;
+}
+.container {
+  background-color: #ffffff;
+}
+.max {
+  width: 100%;
+}
+.content{
+  width: 80%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.card {
+  padding: 5%;
+  margin: 5%;
+}
+.tile {
+  height: 100%;
+}
+.mat-figure {
+  height: 100%;
+}

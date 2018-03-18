@@ -1,0 +1,13 @@
+<div style="text-align:center">
+  <h1>
+    Welcome to the {{ title }} portal!
+  </h1>
+  <img width="300" alt="Angular Logo" src="../assets/imgs/logo.png">
+</div>
+  <mat-expansion-panel *ngFor="let patient of patients">
+    <mat-expansion-panel-header>
+      <mat-panel-title layout-align="center center">
+        {{ patient._id }} {{ patient.firstName }}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
