@@ -1,7 +1,57 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
   <h1>
-    Welcome to the {{ title }} portal!
+    Admin portal
   </h1>
-  <img width="300" alt="Angular Logo" src="../../assets/imgs/logo.png">
+  <h3 *ngIf="user">
+    Admin {{user.firstName}} {{user.lastName}}
+  </h3>
+  <ng-template #loading>Waiting... </ng-template>
 </div>
+
+<mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)" class="container">
+  <mat-grid-tile>
+      <mat-expansion-panel *ngFor="let doctor of doctors; let i = index" class="center-theme">
+        <mat-expansion-panel-header>
+          <mat-panel-title layout-align="center center" class="center-theme">
+            <label>{{i+1}}</label>
+            <label>{{doctor.firstName}} {{doctor.lastName}}</label>
+            <label>{{doctor.id}}</label>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          Doctor Type
+        </mat-panel-description>
+        <div class="center-theme">
+          <h3> Other content </h3>
+          <div class="right-align">
+            <button mat-raised-button color="warn" (click)="deleteMe(doctor.id)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+  </mat-grid-tile>
+  <mat-grid-tile>
+      <mat-expansion-panel *ngFor="let doctor of doctors; let i = index" class="center-theme">
+        <mat-expansion-panel-header>
+          <mat-panel-title layout-align="center center" class="center-theme">
+            <label>{{i+1}}</label>
+            <label>{{doctor.firstName}} {{doctor.lastName}}</label>
+            <label>{{doctor.id}}</label>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-panel-description>
+          Doctor Type
+        </mat-panel-description>
+        <div class="center-theme">
+          <h3> Other content </h3>
+          <div class="right-align">
+            <button mat-raised-button color="warn" (click)="deleteMe(doctor.id)">
+              Delete
+            </button>
+          </div>
+        </div>
+      </mat-expansion-panel>
+  </mat-grid-tile>
+</mat-grid-list>

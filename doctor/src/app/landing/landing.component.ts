@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LandingService } from './landing.service';
 
 @Component({
   selector: 'landing',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class LandingComponent {
   title = 'Willhelm International';
+  constructor(private landingService: LandingService){}
+  onSubmit(f: NgForm): void {
+    console.log(f.value);  // { first: '', last: '' }
+    console.log(f.valid);  // false
+    this.landingService.signIn(f.value);
+  }
 }

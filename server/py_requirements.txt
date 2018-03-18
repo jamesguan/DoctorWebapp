@@ -1,4 +1,6 @@
 flask
+flask_cors
+flask_jwt_extended
 gitpython
 requests
 ipdb

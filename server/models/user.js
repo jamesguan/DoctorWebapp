@@ -4,8 +4,8 @@ const {PrescriptionSchema} = require('./prescription');
 const {AppointmentSchema, Appointment} = require('./appointment');
 
 let user = Schema({
-    firstName: String,
-    lastName: String,
+    firstName: {type: String, required: true},
+    lastName: {type: String, required: true},
     type: { type: String, enum: ['patient', 'doctor', 'admin'], default: "patient"},
     prescriptions: [PrescriptionSchema],
     patients: [String],

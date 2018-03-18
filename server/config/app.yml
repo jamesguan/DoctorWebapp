@@ -8,3 +8,5 @@ env:
 
 database:
   uri: 'mongodb://localhost/doctordb'
+
+JWT_SECRET_KEY: 'super-secret'

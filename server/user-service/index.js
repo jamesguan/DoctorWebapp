@@ -37,17 +37,79 @@ try {
   console.log('Failed to connect to DB', e);
 }
 
-app.post('/doctor', (req, res) => {
+app.get('/admin/:id/doctors', (req, res) => {
+  User.findOne({ _id : req.params.id }, (err, user) => {
+    if (err)
+      return res.status(500);
+    if (user && user.type === 'admin' && user.active) {
+      User.find(
+        {type: 'doctor'},
+        '_id firstName lastName active',
+        (err, doctors) => {
+          return res.json(doctors);
+        }
+      );
+    } else {
+      return res.status(404).send({ msg: 'Admin not found' });
+    }
+  });
+});
+
+app.get('/admin/:id/doctors', (req, res) => {
+  User.findOne({ _id : req.params.id }, (err, user) => {
+    if (err)
+      return res.status(500);
+    if (user && user.type === 'admin' && user.active) {
+      User.find(
+        {type: 'doctor'},
+        '_id firstName lastName active',
+        (err, doctors) => {
+          return res.json(doctors);
+        }
+      );
+    } else {
+      return res.status(404).send({ msg: 'Admin not found' });
+    }
+  });
+});
+
+app.post('/user', (req, res) => {
   let newUser = new User();
-  newUser.firstName = req.body.firstName || undefined;
-  newUser.lastName = req.body.lastName || undefined;
-  newUser.permissions = ['doctorView'];
-  newUser.type = 'doctor';
+  newUser.firstName = req.body.firstName;
+  newUser.lastName = req.body.lastName;
+  switch (req.body.type){
+    case 'admin':
+      newUser.permissions = ['adminView'];
+      newUser.type = 'admin';
+      break
+    case 'doctor':
+      newUser.permissions = ['doctorView'];
+      newUser.type = 'doctor';
+      break;
+    case 'patient':
+      newUser.permissions = ['patientView'];
+      newUser.type = 'patient';
+      break;
+    default:
+      return res.status(500).send({msg: 'Type not defined'});
+  }
   newUser.save(function(err) {
     if (err)
       return res.status(500);
 
-    return res.json({msg: 'Doctor added successfully'});
+    return res.json({msg: `${req.body.type} added successfully`});
+  });
+});
+
+app.get('/user/:id', (req, res) => {
+  User.findOne({'_id': req.params.id}, (err, user) => {
+    if (err)
+      return res.status(500);
+    if (user) {
+      return res.json(user);
+    } else {
+      return res.status(404).send({ msg: 'Doctor not found' });
+    }
   });
 });
 
@@ -60,19 +122,6 @@ app.get('/doctor/:id', (req, res) => {
     } else {
       return res.status(404).send({ msg: 'Doctor not found' });
     }
-  });
-});
-
-app.post('/patient', (req, res) => {
-  let newUser = new User();
-  newUser.firstName = req.body.firstName || undefined;
-  newUser.lastName = req.body.lastName || undefined;
-  newUser.permissions = ['patientView'];
-  newUser.save(function(err) {
-    if (err)
-      return res.status(500);
-
-    res.json({msg: 'Patient added successfully'});
   });
 });
 
@@ -116,6 +165,25 @@ app.post('/patient/:id/prescription', (req, res) => {
       });
     } else {
       res.status(404).send({ msg: 'Patient not found' });
+    }
+  });
+});
+
+app.put('/user/:id', (req, res) => {
+  User.findOne({'_id': req.params.id}, (err, user) => {
+    if (err)
+      return done(err);
+    if (user) {
+      console.log(req.body);
+      user.update(req.body);
+      user.save((err) => {
+        if (err)
+          return res.status(500);
+
+        res.json({msg: 'User edited successfully'});
+      });
+    } else {
+      res.status(404).send({ msg: 'User not found' });
     }
   });
 });
