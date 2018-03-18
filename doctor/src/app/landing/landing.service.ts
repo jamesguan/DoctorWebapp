@@ -17,9 +17,9 @@ export class LandingService {
 
   }
   signIn(data): void{
-    this.http.post('http://localhost:20000/auth', data, httpOptions)
+    this.http.post<any>('http://localhost:20000/auth', data, httpOptions)
     .subscribe(
-      (data: any[]) => {
+      (data => {
         localStorage.setItem("access_token", data.access_token);
         switch(data.type){
           case 'admin':
@@ -29,7 +29,16 @@ export class LandingService {
             this.router.navigate(['/doctor']);
             break;
         }
-      }
-    );
+      }),
+      (error => {
+        switch(error.status){
+          case 404:
+          case 500:
+            break;
+          default:
+            localStorage.clear();
+            this.router.navigate(['/']);
+        }
+      }));
   }
 }

@@ -25,22 +25,25 @@ export class AdminService {
     })
     .pipe(retry(10))
     .subscribe(
-      (data) => {
+      (data => {
         this.doctors.splice(0, this.doctors.length);
         data.doctors.forEach((elem) => {
           let doc = new Doctor(elem._id, elem.firstName, elem.lastName)
           this.doctors.push(doc);
         });
         this.user = Object.assign(this.user, data.user);
-        this.doctors.sort((a,b) => {
-          return (a.lastName === b.lastName ? a.firstName > a.firstName :  a.lastName > b.lastName);
+        this.doctors.sort((a: any,b: any) => {
+          if (a.lastName === b.lastName) {
+            return ( a.firstName > a.firstName ? 1 : -1 );
+          }
+          return ( a.lastName > b.lastName ? 1 : -1);
         });
         this.patients.splice(0, this.patients.length);
         data.patients.forEach((elem) => {
           let patient = JSON.parse(JSON.stringify(elem));
           this.patients.push(patient);
         });
-      },
+      }),
       (error) => {
         switch(error.status){
           case 404:
