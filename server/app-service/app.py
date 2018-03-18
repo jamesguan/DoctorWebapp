@@ -9,6 +9,7 @@ from werkzeug.security import safe_str_cmp
 
 import requests
 import logging
+import json
 import yaml
 
 class User(object):
@@ -22,6 +23,8 @@ class User(object):
 app = Flask(__name__)
 app.debug = True
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
+headers = {'Content-Type':'application/json'}
 
 app.config.from_object(__name__)
 
@@ -61,6 +64,8 @@ def admin_view():
     if 'adminView' in user_dict['permissions'] and user_dict['type'] == 'admin':
         endpoint = get_endpoint('user', 'admin/%s/doctors' % (user_dict['_id']))
         doctors = requests.get(endpoint).json()
+        endpoint = get_endpoint('user', 'admin/%s/patients' % (user_dict['_id']))
+        patients = requests.get(endpoint).json()
 
         user = {
             'firstName': user_dict['firstName'],
@@ -70,16 +75,22 @@ def admin_view():
         }
         payload = {
             'user': user,
-            'doctors': doctors
+            'doctors': doctors,
+            'patients': patients
         }
         return jsonify(payload)
     abort(500)
 
 @app.route('/doctor', methods=['POST'])
+@jwt_required
 def create_doctor():
-    endpoint = get_endpoint('user', 'doctor')
-    req = requests.post(endpoint, data= request.json)
-    return jsonify({'msg': 'okay'})
+    user_dict = get_jwt_identity()
+    if 'adminView' in user_dict['permissions'] and user_dict['type'] == 'admin':
+        endpoint = get_endpoint('user', 'user')
+        request.json['type'] = 'doctor';
+        req = requests.post(endpoint, data=json.dumps(request.json), headers=headers)
+        return jsonify(req.json())
+    abort(500)
 
 @app.route('/doctor/<id>', methods=['GET'])
 def get_doctor(id):
@@ -87,11 +98,11 @@ def get_doctor(id):
     doctor = requests.get(endpoint, data=request.json).json()
     return jsonify(doctor)
 
-@app.route('/user/<id>/active/<status>', methods=['PUT'])
-def deactivate_user(id, status):
-    import ipdb; ipdb.set_trace()
+@app.route('/user/<id>/inactive', methods=['PUT'])
+@jwt_required
+def deactivate_user(id):
     endpoint = get_endpoint('user', 'user/%s' % (id))
-    user = requests.put(endpoint, data={'active': status}).json()
+    user = requests.put(endpoint, data=json.dumps({'active': request.json['status']}), headers=headers).json()
     return jsonify({'msg': 'okay'})
 
 @app.route('/admin/<id>/doctors', methods=['GET'])

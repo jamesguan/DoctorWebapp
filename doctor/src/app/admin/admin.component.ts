@@ -13,25 +13,33 @@ export class AdminComponent implements OnInit {
   }
   ngOnInit(){
     this.getDoctors();
+    this.getPatients();
     this.getUser();
-    console.log(window);
     this.breakpoint = (window.innerWidth <= 800) ? 1 : 2;
   }
   getDoctors(): void {
     this.adminService.getDoctors()
         .subscribe(doctors => this.doctors = doctors);
   }
+  getPatients(): void {
+    this.adminService.getPatients()
+        .subscribe(patients => this.patients = patients);
+  }
   getUser(): void {
     this.adminService.getUser()
         .subscribe(user => this.user = user);
   }
-  deleteMe(id): void {
-    this.doctors.forEach((element, index, object)=>{
-      if (element.id === id)
-        object.splice(index,1);
-    });
+  deleteUser(id): void {
+    this.adminService.deleteUser(id);
   }
   onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 800) ? 1 : 2;
+  }
+  addDoctor(f: NgForm): void {
+    if (!f.valid){
+      alert("Please complete all fields");
+      return;
+    }
+    this.adminService.addDoctor(f.value.firstName, f.value.lastName);
   }
 }

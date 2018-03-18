@@ -5,7 +5,7 @@
   text-align: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1000px;
+  background-color: #ffffff;
 }
 .flexit {
   display: flex;
@@ -14,11 +14,23 @@
   text-align: right;
 }
 .container {
-  text-align: center;
-  justify-content: space-between;
-  background-color: #64b5f6;
+  background-color: #ffffff;
+}
+.max {
+  width: 100%;
+}
+.content{
+  width: 80%;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+.card {
+  padding: 5%;
+  margin: 5%;
+}
+.tile {
   height: 100%;
 }
-.content {
-  background-color: #aab5ff;
+.mat-figure {
+  height: 100%;
 }

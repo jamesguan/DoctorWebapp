@@ -25,8 +25,9 @@ try {
 
 app.use( (req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin',null);
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE');
   res.setHeader('Access-Control-Allow-Headers','X-Requested-With, content-type');
+  console.log(req.body);
   next();
 });
 
@@ -43,10 +44,27 @@ app.get('/admin/:id/doctors', (req, res) => {
       return res.status(500);
     if (user && user.type === 'admin' && user.active) {
       User.find(
-        {type: 'doctor'},
+        {type: 'doctor', active: true},
         '_id firstName lastName active',
         (err, doctors) => {
           return res.json(doctors);
+        }
+      );
+    } else {
+      return res.status(404).send({ msg: 'Admin not found' });
+    }
+  });
+});
+
+app.get('/admin/:id/patients', (req, res) => {
+  User.findOne({ _id : req.params.id }, (err, user) => {
+    if (err)
+      return res.status(500);
+    if (user && user.type === 'admin' && user.active) {
+      User.find(
+        {type: 'patient', active: true},
+        (err, patients) => {
+          return res.json(patients);
         }
       );
     } else {
@@ -74,9 +92,8 @@ app.get('/admin/:id/doctors', (req, res) => {
 });
 
 app.post('/user', (req, res) => {
-  let newUser = new User();
-  newUser.firstName = req.body.firstName;
-  newUser.lastName = req.body.lastName;
+  let newUser = new User(req.body);
+  console.log(req.body);
   switch (req.body.type){
     case 'admin':
       newUser.permissions = ['adminView'];
@@ -93,11 +110,11 @@ app.post('/user', (req, res) => {
     default:
       return res.status(500).send({msg: 'Type not defined'});
   }
+
   newUser.save(function(err) {
     if (err)
       return res.status(500);
-
-    return res.json({msg: `${req.body.type} added successfully`});
+    return res.json({id: newUser._id});
   });
 });
 
@@ -174,8 +191,7 @@ app.put('/user/:id', (req, res) => {
     if (err)
       return done(err);
     if (user) {
-      console.log(req.body);
-      user.update(req.body);
+      Object.assign(user, req.body);
       user.save((err) => {
         if (err)
           return res.status(500);

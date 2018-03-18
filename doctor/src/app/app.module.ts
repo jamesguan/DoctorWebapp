@@ -6,9 +6,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatGridListModule } from '@angular/material/grid-list';
-
+import { MatIconModule } from '@angular/material/icon';
 
 import { AppComponent } from './app.component';
 import { AdminComponent } from './admin/admin.component';
@@ -36,7 +37,9 @@ const appRoutes: Routes = [
     FormsModule,
     HttpClientModule,
     MatButtonModule,
+    MatCardModule,
     MatExpansionModule,
+    MatIconModule,
     MatGridListModule,
     RouterModule.forRoot(
       appRoutes

@@ -1,57 +1,78 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Admin portal
-  </h1>
-  <h3 *ngIf="user">
-    Admin {{user.firstName}} {{user.lastName}}
-  </h3>
-  <ng-template #loading>Waiting... </ng-template>
-</div>
+<div  class="content" layout-align="space-between center">
+<mat-card layout="row" class="card">
+  <mat-card-content>
+    <h3>Admin portal</h3>
+    <h4 class="right-align">Admin {{user.firstName}} {{user.lastName}}</h4>
+    <ng-template #loading>Waiting... </ng-template>
+  </mat-card-content>
+</mat-card>
 
-<mat-grid-list [cols]="breakpoint" rowHeight="1:1" (window:resize)="onResize($event)" class="container">
-  <mat-grid-tile>
-      <mat-expansion-panel *ngFor="let doctor of doctors; let i = index" class="center-theme">
-        <mat-expansion-panel-header>
-          <mat-panel-title layout-align="center center" class="center-theme">
-            <label>{{i+1}}</label>
-            <label>{{doctor.firstName}} {{doctor.lastName}}</label>
-            <label>{{doctor.id}}</label>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-panel-description>
-          Doctor Type
-        </mat-panel-description>
-        <div class="center-theme">
-          <h3> Other content </h3>
-          <div class="right-align">
-            <button mat-raised-button color="warn" (click)="deleteMe(doctor.id)">
-              Delete
-            </button>
-          </div>
+<mat-card layout="row" class="card">
+<mat-card-content>
+  <mat-accordion>
+  <div layout="column" class="max" layout-align="center center" class="center-theme">
+    <h3>Doctors</h3>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title layout-align="start center" class="center-theme">
+          <mat-icon iconName="add_circle">add_circle</mat-icon>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <hr />
+      <form #f="ngForm" (ngSubmit)="addDoctor(f)" validate>
+        <label> First name: </label><br />
+        <input name="firstName" ngModel required /><br />
+        <label> Last name: </label><br />
+        <input name="lastName" ngModel required /><br />
+        <button mat-raised-button>Submit</button>
+      </form>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngFor="let doctor of doctors; let i = index" class="center-theme">
+      <mat-expansion-panel-header>
+        <mat-panel-title layout-align="center center" class="center-theme">
+          <label>{{i+1}}</label>
+          <label>ID: {{doctor.id}}</label>
+          <label>Dr.{{doctor.lastName}}, {{doctor.firstName}}</label>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <hr />
+      <mat-panel-description>
+        <label>ID: {{doctor.id}}</label>
+      </mat-panel-description>
+      <hr />
+      <div class="center-theme">
+        <div class="right-align">
+          <button mat-raised-button color="warn" (click)="deleteUser(doctor.id)">
+            Delete
+          </button>
         </div>
-      </mat-expansion-panel>
-  </mat-grid-tile>
-  <mat-grid-tile>
-      <mat-expansion-panel *ngFor="let doctor of doctors; let i = index" class="center-theme">
-        <mat-expansion-panel-header>
-          <mat-panel-title layout-align="center center" class="center-theme">
-            <label>{{i+1}}</label>
-            <label>{{doctor.firstName}} {{doctor.lastName}}</label>
-            <label>{{doctor.id}}</label>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-panel-description>
-          Doctor Type
-        </mat-panel-description>
-        <div class="center-theme">
-          <h3> Other content </h3>
-          <div class="right-align">
-            <button mat-raised-button color="warn" (click)="deleteMe(doctor.id)">
-              Delete
-            </button>
+      </div>
+    </mat-expansion-panel>
+  </div>
+</mat-accordion>
+</mat-card-content>
+</mat-card>
+<mat-card class="card">
+      <h3>Patients</h3>
+        <mat-expansion-panel *ngFor="let patient of patients; let i = index" class="center-theme">
+          <mat-expansion-panel-header>
+            <mat-panel-title layout-align="center center" class="center-theme">
+              <label>{{i+1}}</label>
+              <label>{{patient.firstName}} {{patient.lastName}}</label>
+              <label>{{patient._id}}</label>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-panel-description>
+            Patient Type
+          </mat-panel-description>
+          <div class="center-theme">
+            <div class="right-align">
+              <button mat-raised-button color="warn" (click)="deleteUser(patient._id)">
+                Delete
+              </button>
+            </div>
           </div>
-        </div>
-      </mat-expansion-panel>
-  </mat-grid-tile>
-</mat-grid-list>
+        </mat-expansion-panel>
+</mat-card>
+</div>
