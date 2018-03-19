@@ -16,7 +16,7 @@ export class LandingService {
 
   }
   signIn(data): void{
-    this.http.post<any>('http://18.188.57.65:20000/auth', data, httpOptions)
+    this.http.post<any>('http://localhost:20000/auth', data, httpOptions)
     .subscribe(
       (data => {
         localStorage.setItem("access_token", data.access_token);
