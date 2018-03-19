@@ -11,7 +11,11 @@
     </mat-panel-title>
   </mat-expansion-panel-header>
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <label for="username"> ID: ( Use 5aad2d8fb4308a0a146f5f9c ) </label>
+    <label for="username"> ID:<br />
+      Admin: 5aad2d8fb4308a0a146f5f9c<br />
+      Patient: 5aad2d79b4308a0a146f5f9a<br />
+      Doctor: 5aade1441c12e347840131c0<br />
+    </label>
     <br />
     <input name="username" ngModel required #first="ngModel" />
     <br />

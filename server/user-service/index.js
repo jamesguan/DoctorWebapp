@@ -37,22 +37,14 @@ try {
   console.log('Failed to connect to DB', e);
 }
 
-app.get('/admin/:id/doctors', (req, res) => {
-  User.findOne({ _id : req.params.id }, (err, user) => {
-    if (err)
-      return res.status(500);
-    if (user && user.type === 'admin' && user.active) {
-      User.find(
-        {type: 'doctor', active: true},
-        '_id firstName lastName active',
-        (err, doctors) => {
-          return res.json(doctors);
-        }
-      );
-    } else {
-      return res.status(404).send({ msg: 'Admin not found' });
+app.get('/doctors', (req, res) => {
+  User.find(
+    {type: 'doctor', active: true},
+    '_id firstName lastName active',
+    (err, doctors) => {
+      return res.json(doctors);
     }
-  });
+  );
 });
 
 app.get('/admin/:id/patients', (req, res) => {
@@ -123,7 +115,7 @@ app.get('/user/:id', (req, res) => {
     if (user) {
       return res.json(user);
     } else {
-      return res.status(404).send({ msg: 'Doctor not found' });
+      return res.status(404).send({ msg: 'User not found' });
     }
   });
 });
@@ -168,7 +160,7 @@ app.delete('/patient/:id', (req, res) => {
 app.post('/patient/:id/prescription', (req, res) => {
   User.findOne({'_id': req.params.id}, (err, user) => {
     if (err)
-      return done(err);
+      return res.status(500);
     if (user && user.type === 'patient') {
       let data = req.body;
       user.prescriptions.push(new Prescription(data));
@@ -187,7 +179,7 @@ app.post('/patient/:id/prescription', (req, res) => {
 app.put('/user/:id', (req, res) => {
   User.findOne({'_id': req.params.id}, (err, user) => {
     if (err)
-      return done(err);
+      return res.status(500);
     if (user) {
       Object.assign(user, req.body);
       user.save((err) => {
@@ -205,7 +197,7 @@ app.put('/user/:id', (req, res) => {
 app.post('/user/:id/appointment/:appointment', (req, res) => {
   User.findOne({'_id': req.params.id}, (err, user) => {
     if (err)
-      return done(err);
+      return res.status(500);
     if (user) {
       user.appointments.push(req.params.appointment);
       user.save(function(err) {

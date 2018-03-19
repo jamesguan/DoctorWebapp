@@ -35,6 +35,9 @@ try {
 }
 
 app.post('/appointment', (req, res) => {
+  console.log(req.body);
+  data = req.body;
+  data.time = new Date(data.time);
   let appointment = new Appointment(req.body);
   appointment.save(function(err) {
     if (err)

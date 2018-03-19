@@ -1,0 +1,65 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div  class="content" layout-align="space-between center">
+<mat-card layout="row" class="card">
+  <mat-card-content>
+    <h3>Patient portal</h3>
+    <h4 class="right-align">Patient {{user.firstName}} {{user.lastName}}</h4>
+    <ng-template #loading>Waiting... </ng-template>
+  </mat-card-content>
+</mat-card>
+
+<mat-card layout="row" class="card">
+  <mat-card-content>
+    <mat-accordion>
+      <div layout="column" class="max" layout-align="center center" class="center-theme">
+        <h3>Appointments</h3>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title layout-align="start center" class="center-theme">
+              <mat-icon iconName="add_circle">add_circle</mat-icon>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <hr />
+          <form #f="ngForm" (ngSubmit)="setAppointment(f)" validate>
+            <mat-form-field>
+              <mat-select placeholder="Choose doctor" name="doctor" ngModel required>
+                <mat-option *ngFor="let doctor of doctors" [value]="doctor._id">
+                  Dr. {{ doctor.lastName }}, {{ doctor.firstName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" placeholder="Choose a date" name="date" ngModel required>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <button mat-raised-button>Submit</button>
+          </form>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngFor="let appointment of appointments; let i = index" class="center-theme">
+          <mat-expansion-panel-header>
+            <mat-panel-title layout-align="center center" class="center-theme">
+              <label> {{ appointment.time }} </label>
+              <br />
+              <label> {{ appointment.doctorName }}</label>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <hr />
+          <mat-panel-description>
+            <label>{{ appointment.doctorName }}</label>
+          </mat-panel-description>
+          <hr />
+          <div class="center-theme">
+            <div class="right-align">
+              <button mat-raised-button color="warn" (click)="deleteUser(doctor.id)">
+                Delete
+              </button>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+  </mat-card-content>
+</mat-card>
+
+</div>

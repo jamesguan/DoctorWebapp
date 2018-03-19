@@ -27,6 +27,9 @@ export class LandingService {
           case 'doctor':
             this.router.navigate(['/doctor']);
             break;
+          case 'patient':
+            this.router.navigate(['/patient']);
+            break;
         }
       }),
       (error => {

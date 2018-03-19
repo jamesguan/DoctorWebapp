@@ -61,7 +61,7 @@ jwt = JWTManager(app)
 def admin_view():
     user_dict = get_jwt_identity()
     if 'adminView' in user_dict['permissions'] and user_dict['type'] == 'admin':
-        endpoint = get_endpoint('user', 'admin/%s/doctors' % (user_dict['_id']))
+        endpoint = get_endpoint('user', 'doctors')
         doctors = requests.get(endpoint).json()
         endpoint = get_endpoint('user', 'admin/%s/patients' % (user_dict['_id']))
         patients = requests.get(endpoint).json()
@@ -76,6 +76,30 @@ def admin_view():
             'user': user,
             'doctors': doctors,
             'patients': patients
+        }
+        return jsonify(payload)
+    abort(500)
+
+@app.route('/view/patient', methods=['GET'])
+@jwt_required
+def patient_view():
+    user_dict = get_jwt_identity()
+    if 'patientView' in user_dict['permissions'] and user_dict['type'] == 'patient':
+        endpoint = get_endpoint('user', 'user/%s/appointments' % (user_dict['_id']))
+        appointments = requests.get(endpoint).json()
+        endpoint = get_endpoint('user', 'doctors')
+        doctors = requests.get(endpoint).json()
+
+        keys = ['firstName', 'lastName', 'type', 'permissions']
+
+        user = {}
+        for key in keys:
+            user[key] = user_dict[key]
+
+        payload = {
+            'user': user,
+            'appointments': appointments,
+            'doctors': doctors
         }
         return jsonify(payload)
     abort(500)
@@ -104,16 +128,23 @@ def deactivate_user(id):
     user = requests.put(endpoint, data=json.dumps({'active': request.json['status']}), headers=headers).json()
     return jsonify({'msg': 'okay'})
 
-@app.route('/admin/<id>/doctors', methods=['GET'])
-def get_doctors(id):
-    endpoint = get_endpoint('user', 'admin/%s/doctors' % (id))
+@app.route('/doctors', methods=['GET'])
+def get_doctors():
+    endpoint = get_endpoint('user', 'doctors')
     doctors = requests.get(endpoint, data=request.json).json()
     return jsonify(doctors)
 
 @app.route('/appointment', methods=['POST'])
+@jwt_required
 def appointment():
+    user_dict = get_jwt_identity()
+    request.json['patient'] = user_dict['_id'];
     endpoint = get_endpoint('appointment', 'appointment')
-    appointment = requests.post(endpoint, data=request.json).json()
+    appointment = requests.post(endpoint, data=json.dumps(request.json), headers=headers).json()
+    endpoint = get_endpoint('user', 'user/%s/appointment/%s' % (user_dict['_id'], appointment['_id']))
+    requests.post(endpoint, headers=headers).json()
+    endpoint = get_endpoint('user', 'user/%s/appointment/%s' % (request.json['doctor'], appointment['_id']))
+    requests.post(endpoint, headers=headers).json()
     return jsonify({'msg': 'okay'})
 
 if __name__ == '__main__':
