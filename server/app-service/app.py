@@ -149,4 +149,4 @@ def appointment():
 
 if __name__ == '__main__':
     app.logger.setLevel(logging.INFO)
-    app.run(host='localhost', port=int(app.config['ports']['gateway']))
+    app.run(host='0.0.0.0', port=int(app.config['ports']['gateway']))
