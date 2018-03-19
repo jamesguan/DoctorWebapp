@@ -13,17 +13,18 @@ Steps to run the app:
 
 Steps to run the backend:
   Database:
-    1. Install Mongo version 3.6
-    2. Import the database from the mongo archive folder dump in the db directory
+  1. Install Mongo version 3.6
+  2. Import the database from the mongo archive folder dump in the db directory
+  
   Gateway:
-    1. Install virtualenv and activate
-    2. cd into server directory
-    3. Run: pip install --upgrade -r py_requirements.txt
-    4. cd into app-service directory and run: python app.py
+  1. Install virtualenv and activate
+  2. cd into server directory
+  3. Run: pip install --upgrade -r py_requirements.txt
+  4. cd into app-service directory and run: python app.py
 
   Services:
-    1. cd into server folder
-    2. Run: npm Install
-    3. cd into <service name>-service
-    4. Run node index.js
-    5. Do this for the user service and appointment service
+  1. cd into server folder
+  2. Run: npm Install
+  3. cd into <service name>-service
+  4. Run node index.js
+  5. Do this for the user service and appointment service
